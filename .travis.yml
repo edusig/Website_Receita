@@ -1,0 +1,20 @@
+language:python
+python:
+  - "2.7"
+env:
+  -DJANGO=1.4.3
+before_install:
+  - pip install codecov
+install:
+  - pip -q install Django==$DJANGO --use-mirrors
+  - pip install pep8 --user-mirrors
+  - pip install coveralls
+  - pip install flake8
+script:
+  - pep8
+  - flake8 *.py --max-line-length=95
+  - coverage run --source=home manage.py test home
+  - ./webreceita/manage.py test receita
+after_success:
+  - codecov
+  - coveralls
