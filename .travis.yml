@@ -1,4 +1,4 @@
-language:python
+language: python
 python:
   - "2.7"
 env:
@@ -7,7 +7,7 @@ before_install:
   - pip install codecov
 install:
   - pip -q install Django==$DJANGO --use-mirrors
-  - pip install pep8 --user-mirrors
+  - pip install pep8 --use-mirrors
   - pip install coveralls
   - pip install flake8
 script:
