@@ -1,4 +1,5 @@
 # Django settings for webreceita project.
+import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -10,10 +11,12 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+PROJECT_DIR = os.path.dirname(__file__)
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.',
-        'NAME': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(PROJECT_DIR, 'dbReceita.db'),
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
@@ -104,9 +107,7 @@ ROOT_URLCONF = 'webreceita.urls'
 WSGI_APPLICATION = 'webreceita.wsgi.application'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_DIR, 'templates')
 )
 
 INSTALLED_APPS = (
@@ -117,6 +118,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'receita'
 )
 
 # A sample logging configuration. The only tangible logging
