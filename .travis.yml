@@ -7,12 +7,9 @@ before_install:
   - pip install codecov
 install:
   - pip -q install Django==$DJANGO
-  - pip install coveralls
   - pip install flake8
 script:
   - flake8 webreceita --max-line-length=95
-  - coverage run --source=webreceita manage.py test receita
-  - webreceita/manage.py test receita
+  - python webreceita/manage.py test receita
 after_success:
   - codecov
-  - coveralls
