@@ -6,14 +6,14 @@ env:
 before_install:
   - pip install codecov
 install:
-  - pip -q install Django==$DJANGO --use-mirrors
-  - pip install pep8 --use-mirrors
+  - pip -q install Django==$DJANGO
+  - pip install pep8
   - pip install coveralls
   - pip install flake8
 script:
   - pep8
-  - flake8 *.py --max-line-length=95
-  - coverage run --source=home manage.py test home
+  - flake8 webreceita --max-line-length=95
+  - coverage run --source=webreceita manage.py test receita
   - ./webreceita/manage.py test receita
 after_success:
   - codecov
