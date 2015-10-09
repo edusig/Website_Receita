@@ -1,5 +1,5 @@
 from django.db import models
-from choices import *
+from choices import COZIMENTO_ESCOLHAS
 from django.contrib.localflavor.br.br_states import STATE_CHOICES
 
 
