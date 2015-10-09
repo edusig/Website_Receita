@@ -3,9 +3,9 @@ Arquivo para definir as escolhas possiveis para um Model da receita
 """
 
 COZIMENTO_ESCOLHAS = (
-    (1, _("Frito")),
-    (2, _("Cozido")),
-    (3, _("Assado")),
-    (4, _("Refogado")),
-    (5, _("Grelhar")),
+    (1, "Frito"),
+    (2, "Cozido"),
+    (3, "Assado"),
+    (4, "Refogado"),
+    (5, "Grelhar"),
 )
