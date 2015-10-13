@@ -3,6 +3,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns(
-    #url(r'^webreceita/', include('webreceita.foo.urls')),
+    url(r'^$', 'redacao.views.index', name='index'),
     url(r'^admin/', include(admin.site.urls)),
 )
