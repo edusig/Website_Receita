@@ -5,5 +5,5 @@ admin.autodiscover()
 urlpatterns = patterns(
     '',
     url(r'^$', 'receita.views.index', name='index'),
-    #url(r'^admin/', include(admin.site.urls), name='admin'),
+    url(r'^admin/', include(admin.site.urls)),
 )
