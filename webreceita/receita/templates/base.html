@@ -6,10 +6,10 @@
 </head>
 <body>
     <header>
-        {% include header.html %}
-        {% include busca.html%}
+        {% include 'header.html' %}
+        {% include 'busca.html'%}
         <nav>
-            {% include menu.html %}
+            {% include 'menu.html' %}
         </nav>
     </header>
     <main>
@@ -17,11 +17,11 @@
             {% block conteudo %}{% endblock %}
         </section>
         <aside>
-            {% include sidebar.html %}
+            {% include 'sidebar.html' %}
         </aside>
     </main>
     <footer>
-        {% include footer.html %}
+        {% include 'footer.html' %}
     </footer>
 </body>
 </html>
