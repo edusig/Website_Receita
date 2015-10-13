@@ -12,6 +12,14 @@ ADMINS = (
 MANAGERS = ADMINS
 
 PROJECT_DIR = os.path.dirname(__file__)
+PROJECT_ROOT = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), ".."),
+)
+
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+STATIC_URL = '/static/'
+
+BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_DIR, 'components')
 
 DATABASES = {
     'default': {
@@ -118,7 +126,12 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'receita'
+    'receita',
+    'djangobower',
+)
+
+BOWER_INSTALLED_APPS = (
+    'jquery',
 )
 
 # A sample logging configuration. The only tangible logging
