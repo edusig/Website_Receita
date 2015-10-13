@@ -1,6 +1,5 @@
 from django.db import models
-from choices import COZIMENTO_ESCOLHAS
-from django.contrib.localflavor.br.br_states import STATE_CHOICES
+from choices import COZIMENTO_ESCOLHAS, STATE_CHOICES
 
 
 class Autor(models.Model):
@@ -29,7 +28,7 @@ class Receita(models.Model):
 
 
 class ReceitaImagem(models.Model):
-    image = models.ImageField()
+    image = models.ImageField(upload_to="receita_imagens/")
     ref = models.ForeignKey(Receita)
 
 
