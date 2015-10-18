@@ -7,10 +7,12 @@ env:
   -DJANGO=1.4.3
 
 install:
+  - pip install pip --upgrade
   - pip -q install Django==$DJANGO
   - pip install flake8
   - pip install codecov
   - pip install django-bower
+  - pip install pil --allow-external pil
 
 script:
   - flake8 webreceita --max-line-length=95
