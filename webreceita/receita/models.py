@@ -26,7 +26,7 @@ class Receita(models.Model):
     porcoes = models.IntegerField()
     valor_nutricional = models.IntegerField()
     metodo_cozimento = models.IntegerField(choices=COZIMENTO_ESCOLHAS, default=1)
-
+    avaliacao = models.IntegerField()
 
 class ReceitaImagem(models.Model):
     image = models.ImageField()
