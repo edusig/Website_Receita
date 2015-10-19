@@ -1,7 +1,16 @@
 {% extends 'base.html' %}
 
 {% block title %}Website Receitas{% endblock %}
+{% block scripts %}<link rel="stylesheet" type="text/css" href="/static/css/estilo.css" />{% endblock %}
 
 {% block conteudo %}
-    <h1>Index</h1>
+    {% for receita in receitas %}
+            <div class="receitaImagem">
+                <!-- {{ receitaImagem.image}} -->
+            </div>
+            <div class="receitaDados">
+                {{ receita.nome|truncatechars:12 }}
+                {{ receita.avaliacao }}
+            </div>        
+    {% endfor %}
 {% endblock %}
