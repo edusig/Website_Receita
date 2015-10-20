@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static%}
+
+{% block title %} - Receitas de {{ cat }}{% endblock %}
+{% block scripts %}{% endblock %}
+
+{% block conteudo %}
+    <h2>Receitas de {{ cat }}</h2>
+    {% for receita in receitas %}
+        <article class="receita col-lg-12">
+            <div class="col-lg-5">
+                <a href="{% url detalhe_receita receita.pk %}"><img src="/uploads/{{ receita.image }}" class="receita_imagem img-thumbnail img-responsive"></a>
+            </div>
+            <div class="col-lg-7">
+                <a href="{% url detalhe_receita receita.pk %}"><h3>{{ receita.nome }}</h3></a>
+                <p>{{ receita.descricao }}</p>
+                <p>Criado por: {{ receita.autor }}</p>
+                <p>Nota: {{ receita.avaliacao }}/5</p>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock %}

@@ -14,11 +14,13 @@ class Autor(models.Model):
     def __unicode__(self):
         return self.nome_completo
 
+
 class Categoria(models.Model):
     nome = models.CharField(max_length=200)
 
     def __unicode__(self):
         return self.nome
+
 
 class Receita(models.Model):
     nome = models.CharField(max_length=50)
@@ -29,22 +31,24 @@ class Receita(models.Model):
     porcoes = models.IntegerField()
     valor_nutricional = models.IntegerField()
     metodo_cozimento = models.IntegerField(choices=COZIMENTO_ESCOLHAS, default=1)
+    image = models.ImageField(upload_to="receita_imagens/")
     avaliacao = models.IntegerField()
     
     def __unicode__(self):
         return self.nome
 
+
 class ReceitaImagem(models.Model):
     image = models.ImageField(upload_to="receita_imagens/")
     ref = models.ForeignKey(Receita)
-    
+
     def __unicode__(self):
-        return self.image
+        return self.image.name
 
 
 class Ingredientes(models.Model):
     nome = models.CharField(max_length=100)
-    quantidade = models.IntegerField()
+    quantidade = models.FloatField()
     unidade = models.CharField(max_length=20)
     receita = models.ForeignKey(Receita)
 

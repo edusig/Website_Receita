@@ -1,4 +1,9 @@
-<div class="cabecalho">
-    <img src="" alt="Logo" class="logo"/>
-    <span class="slogan">"Slogan escrito aqui."</span>
+{% load static %}
+<div class="col-lg-8">
+    <img src="{% static 'images/logo.jpg' %}" alt="Receitas Gourmet" class="img-responsive"/>
+    <h1>Receitas Gourmet</h1>
+</div>
+<div class="col-lg-4 subtitle">
+    <p class="slogan">Receitas com ingredientes que você não vai encontrar</p>
+    <a href="{% url login %}" title="Entrar na conta">Entrar</a> ou <a href="{% url cadastro %}" title="Cadastrar nova conta">Cadastrar</a>
 </div>

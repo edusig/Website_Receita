@@ -1,0 +1,25 @@
+{% load static %}
+<h3>Receita do Dia</h3>
+{% for receita in receita_do_dia %}
+    <article class="receita col-lg-12">
+        <a href="{% url detalhe_receita receita.pk %}">
+        <img src="/uploads/{{ receita.image }}" class="receita_imagem img-thumbnail img-responsive">
+            <p>
+                <h4>{{ receita.nome }}</h4>
+            </p>
+        </a>
+    </article>
+{% endfor %}
+<h3>Top Receitas</h3>
+{% for receita in top_receitas %}
+    <article class="receita col-lg-12">
+        <a href="{% url detalhe_receita receita.pk %}">
+        <div class="col-lg-6">
+            <img src="/uploads/{{ receita.image }}" class="receita_imagem img-thumbnail img-responsive">
+        </div>
+            <p>
+                <h4>{{ receita.nome }}</h4>
+            </p>
+        </a>
+    </article>
+{% endfor %}

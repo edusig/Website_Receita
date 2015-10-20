@@ -129,12 +129,16 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'receita',
     'djangobower',
+    'south',
 )
 
 BOWER_INSTALLED_APPS = (
     'jquery',
     'bootstrap',
 )
+
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'uploads')
+MEDIA_URL = '/uploads/'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

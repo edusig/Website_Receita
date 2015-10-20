@@ -1,16 +1,26 @@
 {% extends 'base.html' %}
+{% load static%}
 
-{% block title %}Website Receitas{% endblock %}
-{% block scripts %}<link rel="stylesheet" type="text/css" href="/static/css/estilo.css" />{% endblock %}
+{% block title %}{% endblock %}
+{% block scripts %}{% endblock %}
 
 {% block conteudo %}
-    {% for receita in receitas %}
-            <div class="receitaImagem">
-                <!-- {{ receitaImagem.image}} -->
-            </div>
-            <div class="receitaDados">
-                {{ receita.nome|truncatechars:12 }}
-                {{ receita.avaliacao }}
-            </div>        
+    <h2>Receitas</h2>
+    {% for i in receitas %}
+        {% if i.categoria %}
+            <h3 class="categorias">{{ i.Nome }}</h3>
+        {% else %}
+            <article class="receita col-lg-12">
+                <div class="col-lg-5">
+                    <img src="/uploads/{{ i.receita.image }}" class="receita_imagem img-responsive img-thumbnail">
+                </div>
+                <div class="col-lg-7">
+                    <a href="{% url detalhe_receita i.receita.pk %}"><h3>{{ i.receita.nome }}</h3></a>
+                    <p>{{ i.receita.descricao }}</p>
+                    <p>Criado por: {{ i.receita.autor }}</p>
+                    <p>Nota: {{ i.receita.avaliacao }}/5</p>
+                </div>
+            </article>
+        {% endif %}
     {% endfor %}
 {% endblock %}

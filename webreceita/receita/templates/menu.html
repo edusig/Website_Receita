@@ -1,5 +1,7 @@
-<span><a href="">Principal</a></span>
-Categorias:
-{% for categoria in categorias %}
-    <span><a href="">{{ categoria.nome }}</a></span>
-{% endfor %}
+<ul class="nav nav-pills">
+    <li role="presentation" class="active"><a href="{% url index %}">Home</a></li>
+    {%for cat in categorias %}
+        <li role="presentation"><a href="{% url categoria cat.nome %}">{{ cat.nome }}</a></li>
+    {% endfor %}
+    {% include 'busca.html'%}
+</ul>

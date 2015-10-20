@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static%}
+
+{% block title %} - {{ receita.nome }}{% endblock %}
+{% block scripts %}{% endblock %}
+
+{% block conteudo %}
+    <h2>Receitas - {{ receita.categoria.nome }} : {{ receita.nome }}</h2>
+    <div class="col-lg-6">
+        <img src="/uploads/{{ receita.image }}" class="img-responsive img-thumbnail">
+    </div>
+    <div class="col-lg-6">
+        <h3>Descrição</h3>
+        <p>{{ receita.descricao }}<br> Criado por: {{ receita.autor }}</p>
+        <h3>Ingredientes</h3>
+        {% for ing in ingredientes %}
+            {{ ing.quantidade }} {{ ing.unidade }} de {{ ing.nome }}<br>
+        {% endfor %}
+        <h3>Modo de Preparo:</h3>
+        <p>
+        {% for linha in receita.instrucao %}
+            {{ linha }}<br>
+        {% endfor %}
+        </p>
+        <h3>Outros detalhes</h3>
+        <p>Valor nutricional (em calorias):{{ receita.valor_nutricional }}</p>
+        {% if not isbebida %}
+            <p>Método de cozimento: {{ receita.metodo_cozimento }}</p>
+        {% endif %}
+        <p>Serve {{ receita.porcoes }} porção.</p>
+    </div>
+{% endblock %}
