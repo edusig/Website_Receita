@@ -6,21 +6,31 @@
 
 {% block conteudo %}
     <h2>Login</h2>
-    <form class="form-horizontal col-lg-10 loginForm">
+    {% if result == 'disabled' %}
+        <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-warning-sign"></span> <strong>Disabled Account!</strong> Please contact support.
+        </div>
+    {% elif result == 'invalid' %}
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-remove"></span> <strong>Invalid login!</strong> Your login email or password are incorrect.
+        </div>
+    {% endif %}
+    <form class="form-horizontal col-lg-10 loginForm" method="POST">
+        {% csrf_token %}
       <div class="form-group">
-        <label for="loginEmail" class="col-sm-2 control-label">Email</label>
-        <div class="col-sm-10">
-          <input type="email" class="form-control" id="loginEmail" placeholder="Email">
+        <label for="loginEmail" class="col-sm-3 control-label">Email</label>
+        <div class="col-sm-9">
+          <input type="email" name="username" class="form-control" id="loginEmail" placeholder="Email">
         </div>
       </div>
       <div class="form-group">
-        <label for="loginPassword" class="col-sm-2 control-label">Password</label>
-        <div class="col-sm-10">
-          <input type="password" class="form-control" id="loginPassword" placeholder="Senha">
+        <label for="loginPassword" class="col-sm-3 control-label">Password</label>
+        <div class="col-sm-9">
+          <input type="password" name="password" class="form-control" id="loginPassword" placeholder="Senha">
         </div>
       </div>
       <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
+        <div class="col-sm-offset-3 col-sm-9">
           <button type="submit" class="btn btn-default">Entrar</button>
         </div>
       </div>
