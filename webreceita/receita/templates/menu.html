@@ -1,7 +1,19 @@
-<ul class="nav nav-pills">
-    <li role="presentation" class="active"><a href="{% url index %}">Home</a></li>
-    {%for cat in categorias %}
-        <li role="presentation"><a href="{% url categoria cat.nome %}">{{ cat.nome }}</a></li>
-    {% endfor %}
-    {% include 'busca.html'%}
-</ul>
+<div class="col-lg-8">
+    <ul class="nav nav-pills">
+        {% if cat == 'home' %}
+            <li role="presentation" class="active">
+        {% else %}
+            <li role="presentation">
+        {% endif %}
+        <a href="{% url index %}">Home</a></li>
+        {%for cate in categorias %}
+            {% if cate.nome == cat %}
+                <li role="presentation" class="active">
+            {% else %}
+                <li role="presentation">
+            {% endif %}
+            <a href="{% url categoria cate.nome %}">{{ cate.nome }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% include 'busca.html'%}

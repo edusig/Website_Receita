@@ -9,6 +9,8 @@
     <link rel="stylesheet" type="text/css" href="/static/css/estilo.css" />
     <script type="text/javascript" src='{% static 'js/jquery.min.js' %}'></script>
     <script type="text/javascript" src='{% static 'js/bootstrap.min.js' %}'></script>
+    <script type="text/javascript" src="{% static 'js/typeahead.bundle.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
     {% block scripts %}{% endblock %}
 </head>
 <body>
@@ -21,10 +23,10 @@
     </header>
     <main class="container-fluid">
         <hr>
-        <section class="col-lg-7">
+        <section class="col-lg-8">
             {% block conteudo %}{% endblock %}
         </section>
-        <aside class="col-lg-4 col-lg-offset-1">
+        <aside class="col-lg-4">
             {% include 'sidebar.html' %}
         </aside>
     </main>

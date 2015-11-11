@@ -1,13 +1,15 @@
 {% load static %}
 <div class="col-lg-8">
-    <img src="{% static 'images/logo.jpg' %}" alt="Receitas Gourmet" class="img-responsive"/>
-    <h1>Receitas Gourmet</h1>
+    <a href="/">
+        <img src="{% static 'images/logo.jpg' %}" alt="Receitas Gourmet" class="img-responsive"/>
+        <h1>Receitas Gourmet</h1>
+    </a>
 </div>
 <div class="col-lg-4 subtitle">
     <p class="slogan">Receitas com ingredientes que você não vai encontrar</p>
-    {% if user.is_authenticated %}
+    {% if not user.is_authenticated %}
         <a href="{% url login %}" title="Entrar na conta">Entrar</a> ou <a href="{% url cadastro %}" title="Cadastrar nova conta">Cadastrar</a>
     {% else %}
-        <a href="{% url logout %}" title="Sair da conta">Sair</a>
+        <a href="{% url user_logout %}" title="Sair da conta">Sair</a>
     {% endif %}
 </div>

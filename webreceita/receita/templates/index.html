@@ -5,12 +5,13 @@
 {% block scripts %}{% endblock %}
 
 {% block conteudo %}
-    <h2>Receitas</h2>
     {% for i in receitas %}
         {% if i.categoria %}
-            <h3 class="categorias">{{ i.Nome }}</h3>
+            <h2 class="categorias">
+                <a href="{% url categoria i.Nome %}">{{ i.Nome }}</a>
+            </h2>
         {% else %}
-            <article class="receita col-lg-12">
+            <article class="receita">
                 <div class="col-lg-5">
                     <img src="/uploads/{{ i.receita.image }}" class="receita_imagem img-responsive img-thumbnail">
                 </div>

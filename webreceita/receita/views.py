@@ -1,7 +1,9 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.http import HttpResponseRedirect, HttpResponse
 from receita.models import *
 from django.contrib.auth import authenticate, login, logout
+import json
 
 
 def index(req):
@@ -10,7 +12,7 @@ def index(req):
     for cat in cdict['categorias']:
         receitas += [{'Nome': cat.nome, 'categoria': True}]
         receitas = receitas + [{'categoria': False, 'receita': x} for x in Receita.objects.filter(categoria=cat)[:3]]
-    cdict.update({'receitas': receitas})
+    cdict.update({'receitas': receitas, 'cat': 'home'})
     context = RequestContext(req, cdict)
     return render_to_response('index.html', context)
 
@@ -41,7 +43,8 @@ def register(req):
 
 
 def user_logout(req):
-    logout(req, 'index.html')
+    logout(req)
+    return HttpResponseRedirect('/')
 
 
 def categoria(req, cat):
@@ -67,6 +70,7 @@ def detalhe_receita(req, pk):
     receita.metodo_cozimento = COZIMENTO_ESCOLHAS[receita.metodo_cozimento][1]
     bebida = receita.categoria.nome == 'Bebidas'
     cdict.update({'receita': receita, 'ingredientes': ingredientes, 'isbebida': bebida})
+    cdict.update({'cat': receita.categoria.nome})
     context = RequestContext(req, cdict)
     return render_to_response('receita.html', context)
 
@@ -83,3 +87,10 @@ def top_receitas():
 
 def load_menu_sidebar():
     return {'categorias' : Categoria.objects.all(), 'receita_do_dia': receita_do_dia(), 'top_receitas': top_receitas()}
+
+
+def busca(req):
+    receitas = Receita.objects.all()
+    rec_nomes = [[x.nome, x.id] for x in receitas]
+    response = {'receitas': rec_nomes}
+    return HttpResponse(json.dumps(response), content_type="application/json")
