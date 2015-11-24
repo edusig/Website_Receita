@@ -57,16 +57,16 @@ class Ingredientes(models.Model):
 
 class Comentario(models.Model):
     comentario = models.TextField(max_length=1000)
-    usuario = models.ForeignKey(PerfilUsuario)
+    usuario = models.ForeignKey(User)
     receita = models.ForeignKey(Receita)
 
     def __unicode__(self):
-        return "{}: {}".format(self.usuario.nome_completo, self.comentario)
+        return "{}".format(self.comentario)
 
 
 class Voto(models.Model):
     valor = models.IntegerField(default=1)
-    usuario = models.ForeignKey(PerfilUsuario)
+    usuario = models.ForeignKey(User)
     receita = models.ForeignKey(Receita)
 
     def __unicode__(self):

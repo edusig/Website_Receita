@@ -16,6 +16,6 @@ urlpatterns = patterns(
     url(r'^detalhe_receita/([a-zA-Z0-9 -_]+)/', 'receita.views.detalhe_receita', name='detalhe_receita'),
     url(r'^busca/', 'receita.views.busca', name='busca'),
     url(r'^exportar_receita/([a-zA-Z0-9 -_]+)', 'receita.views.exportar_receita', name='exportar_receita'),
-    url(r'^votar/([a-zA-Z0-9 -_]+)', 'receita.views.votacao', 'votacao'),
+    url(r'^votar/', 'receita.views.votacao', name='votacao'),
     url(r'^admin/', include(admin.site.urls)),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

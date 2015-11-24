@@ -27,7 +27,6 @@
                     <a href="{% url detalhe_receita i.receita.pk %}"><h3>{{ i.receita.nome }}</h3></a>
                     <p>{{ i.receita.descricao }}</p>
                     <p>Criado por: {{ i.receita.autor }}</p>
-                    <p>Nota: {{ i.receita.avaliacao }}/5</p>
                 </div>
             </article>
         {% endif %}

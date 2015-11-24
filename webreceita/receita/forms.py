@@ -170,18 +170,27 @@ class ReceitaCadastro(forms.ModelForm):
 
 class ComentarForm(forms.ModelForm):
 
-    nome = forms.CharField(max_length=100, label="Nome")
     comentario = forms.CharField(max_length=1000, label="Comentario", widget=forms.Textarea)
+
+    placeholders = {
+        'comentario': 'Mensagem a comentar'
+    }
 
     def __init__(self, *args, **kwargs):
         super(ComentarForm, self).__init__(*args, **kwargs)
 
         helper = self.helper = FormHelper()
         helper.form_class = 'form-horizontal col-lg-12 commentForm'
-        helper.label_class = 'col-sm-3'
-        helper.field_class = 'col-sm-9'
+        helper.label_class = 'col-sm-2'
+        helper.field_class = 'col-sm-10'
+        helper.form_tag = False
         helper.layout = Layout()
         helper.add_input(Submit('comentar', 'Comentar'))
+        for field_name, field in self.fields.items():
+            helper.layout.append(Field(field_name, placeholder=self.placeholders[
+                field_name]))
 
     class Meta:
         model = Comentario
+        exclude = ('usuario', 'receita',)
+        fields = ('comentario',)

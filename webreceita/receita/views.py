@@ -20,6 +20,25 @@ def notificacao_index(modifier, cdict):
     return cdict
 
 
+def do_login(req):
+    username = req.POST['username']
+    password = req.POST['password']
+    try:
+        u = User.objects.get(email=username)
+        user = authenticate(username=u.username, password=password)
+    except User.DoesNotExist:
+        user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            login(req, user)
+            loginresult = 'ok'
+        else:
+            loginresult = 'disabled'
+    else:
+        loginresult = 'invalid'
+    return loginresult
+
+
 def index(req):
     cdict = load_menu_sidebar()
     receitas = []
@@ -49,21 +68,10 @@ def userlogin(req):
     cdict = load_menu_sidebar()
     loginresult = None
     if req.method == 'POST':
-        username = req.POST['username']
-        password = req.POST['password']
-        try:
-            u = User.objects.get(email=username)
-            user = authenticate(username=u.username, password=password)
-        except User.DoesNotExist:
-            user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(req, user)
-                return HttpResponseRedirect('/')
-            else:
-                loginresult = 'disabled'
-        else:
-            loginresult = 'invalid'
+        loginresult = do_login(req)
+        if loginresult == 'ok':
+            return HttpResponseRedirect('/')
+
     cdict.update({'result': loginresult, 'login_form': LoginForm()})
     context = RequestContext(req, cdict)
     return render_to_response('login.html', context)
@@ -85,9 +93,7 @@ def register(req):
                 register_form.is_valid_email(req.POST['email']) and \
                 register_form.is_valid_username(req.POST['username']):
 
-            print("Validado")
             u = user_form.save()
-            print(u)
             u.set_password(u.password)
             u.save()
 
@@ -119,7 +125,13 @@ def categoria(req, cat):
 
 def cadastro_receita(req):
     cdict = load_menu_sidebar()
-    cdict.update({'receita_cadastro': ReceitaCadastro()})
+    receita_cadastro = ReceitaCadastro()
+    if req.method == 'POST':
+        receita_cadastro = ReceitaCadastro(req.POST, req.FILES)
+        if receita_cadastro.is_valid():
+            receita = receita_cadastro.save()
+            return HttpResponseRedirect('/detalhe_receita/{}/'.format(receita.pk))
+    cdict.update({'receita_cadastro': receita_cadastro})
     context = RequestContext(req, cdict)
     return render_to_response('cadastro_receita.html', context)
 
@@ -127,45 +139,75 @@ def cadastro_receita(req):
 def detalhe_receita(req, pk):
     cdict = load_menu_sidebar()
 
-    # Database lookups
     receita = Receita.objects.get(pk=pk)
+    comentario_form = ComentarForm()
+    login_form = LoginForm()
+    # Se for feito algum comentario
+    if req.method == 'POST':
+        if 'autenticado' in req.POST:
+            comentario_form = ComentarForm(req.POST)
+            if comentario_form.is_valid():
+                comentario = comentario_form.save(commit=False)
+                comentario.usuario = req.user
+                comentario.receita = receita
+                comentario.save()
+        else:
+            login_form = LoginForm(req.POST)
+            if login_form.is_valid():
+                do_login(req)
+
+    # Database lookups
     ingredientes = Ingredientes.objects.filter(receita=receita)
     imagens = ReceitaImagem.objects.filter(ref=receita)
-    comentarios = Comentario.objects.filter(receita=receita)
+    # Busca apenas os 100 primeiros comentarios
+    comentarios = Comentario.objects.filter(receita=receita)[:100]
     votos = Voto.objects.filter(receita=receita)
+    voto_valor = [voto.valor for voto in votos]
 
     # Other variables
     ncomentarios = len(comentarios)
-    nota = float(sum(votos))/len(votos) if len(votos) > 0 else 0
+    nota = int(sum(voto_valor))/len(voto_valor) if len(voto_valor) > 0 else 5
     receita.instrucao = receita.instrucao.split('\n')
-    receita.metodo_cozimento = PREPARO_ESCOLHAS[receita.metodo_cozimento][1]
+    receita.metodo_preparo = PREPARO_ESCOLHAS[receita.metodo_preparo][1]
     bebida = receita.categoria.nome == 'Bebidas'
 
     # Updating context
     cdict.update({'receita': receita, 'ingredientes': ingredientes, 'isbebida': bebida})
-    cdict.update({'cat': receita.categoria.nome, 'imagens': imagens})
-    cdict.update({'comentarios': comentarios, 'nota': nota, 'ncomentarios': ncomentarios})
-    cdict.update({'comentario_form': ComentarForm()})
+    cdict.update({'cat': receita.categoria.nome, 'imagens': imagens, 'nota': nota})
+    cdict.update({'comentarios': comentarios, 'ncomentarios': ncomentarios})
+    cdict.update({'comentario_form': comentario_form, 'login_form': login_form, 'id': pk})
     context = RequestContext(req, cdict)
 
     return render_to_response('receita.html', context)
 
 
-def votacao(req, pk):
+def votacao(req):
     if req.method == 'POST':
-        receita = Receita.objects.filter(pk=pk)
+        receita = Receita.objects.get(pk=req.POST['pk'])
+        if not req.user.is_authenticated():
+            return HttpResponse(
+                json.dumps({'response': "Faca login para poder votar!"}),
+                content_type="application/json"
+            )
+        allvotos = Voto.objects.filter(receita=receita, usuario=req.user).count()
+        if allvotos > 0:
+            return HttpResponse(
+                json.dumps({'response': "Voce ja votou nessa receita!"}),
+                content_type="application/json"
+            )
+
         voto = Voto.objects.create(
-            valor=req.POST['nota'],
-            usuario=req.POST['usuario'],
+            valor=req.POST['rating'],
+            usuario=req.user,
             receita=receita
         )
         voto.save()
         return HttpResponse(
-            json.dump({'response': "Voto efetuado com sucesso!", 'type': "success"}),
+            json.dumps({'response': "Voto efetuado com sucesso!", 'type': "success"}),
             content_type="application/json"
         )
     return HttpResponse(
-        json.dump({'response': "Erro ao efetuar voto", 'type': "danger"}),
+        json.dumps({'response': "Erro ao efetuar voto", 'type': "danger"}),
         content_type="application/json"
     )
 
