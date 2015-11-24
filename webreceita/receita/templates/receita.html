@@ -1,51 +1,61 @@
 {% extends 'base.html' %}
 {% load static%}
+{% load comments %}
 
 {% block title %} - {{ receita.nome }}{% endblock %}
-{% block scripts %}{% endblock %}
+{% block scripts %}
+    <script src="{% static 'js/receita.js' %}"></script>
+{% endblock %}
 
 {% block conteudo %}
-    <h2>{{ receita.nome }} ({{ receita.categoria.nome }})</h2>
-    <div class="col-lg-6">
-        <img src="/uploads/{{ receita.image }}" class="img-responsive">
-        <div class="votacao" data-rate="6">
-            <span class="glyphicon glyphicon-star-empty" data-value="1" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star-empty" data-value="2" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star-empty" data-value="3" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star-empty" data-value="4" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star-empty" data-value="5" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star-empty" data-value="6" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star-empty" data-value="7" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star-empty" data-value="8" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star-empty" data-value="9" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star-empty" data-value="10" aria-hidden="true"></span>
+    <div class="col-lg-12" itemscope itemtype="http://schema.org/Recipe">
+        <h2><span itemprop="name">{{ receita.nome }}</span> ({{ receita.categoria.nome }})</h2>
+        <div class="col-lg-6">
+            <img itemprop="image" src="/uploads/{{ receita.image }}" class="img-responsive">
+            <div class="votacao" data-rate="6">
+                <span class="glyphicon glyphicon-star-empty" data-value="1" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star-empty" data-value="2" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star-empty" data-value="3" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star-empty" data-value="4" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star-empty" data-value="5" aria-hidden="true"></span>
+            </div>
+            <div class="col-lg-12">
+                <a href="{% url exportar_receita %}">Exportar receita</a>
+            </div>
         </div>
-    </div>
-    <div class="col-lg-6">
-        <h3>Descrição</h3>
-        <p>{{ receita.descricao }}<br> Criado por: {{ receita.autor }}</p>
-        <h3>Ingredientes</h3>
-        <p>
-            {% for ing in ingredientes %}
-                {{ ing.quantidade }} {{ ing.unidade }} de {{ ing.nome }}<br>
-            {% endfor %}
-        </p>
-        <h3>Modo de Preparo:</h3>
-        <p>
-            {% for linha in receita.instrucao %}
-                {{ linha }}<br>
-            {% endfor %}
-        </p>
-        <h3>Outros detalhes</h3>
-        <p>Valor nutricional (em calorias):{{ receita.valor_nutricional }}</p>
-        {% if not isbebida %}
-            <p>Método de cozimento: {{ receita.metodo_cozimento }}</p>
-        {% endif %}
-        <p>Serve {{ receita.porcoes }} porção.</p>
+        <div class="col-lg-6">
+            <h3>Descrição</h3>
+            <p><span itemprop="description">{{ receita.descricao }}</span><br> Criado por: <span itemprop="author">{{ receita.autor }}</span></p>
+            <h3>Ingredientes</h3>
+            <p>
+                {% for ing in ingredientes %}
+                    <span itemprop="recipeIngredient">{{ ing.quantidade }} {{ ing.unidade }} de {{ ing.nome }}</span><br>
+                {% endfor %}
+            </p>
+            <h3>Modo de Preparo:</h3>
+            <p><span itemprop="recipeInstructions">
+                {% for linha in receita.instrucao %}
+                    {{ linha }}<br>
+                {% endfor %}
+            </span></p>
+            <h3>Outros detalhes</h3>
+            <p itemprop="nutrition" itemscope itemtype="http://schema.org/NutritionInformation">
+                Valor nutricional (em calorias):<span itemprop="calories">{{ receita.valor_nutricional }}</span>
+            </p>
+            {% if not isbebida %}
+                <p>Método de cozimento: <span itemprop="cookingMethod">{{ receita.metodo_cozimento }}</span></p>
+            {% endif %}
+            <p>Serve {{ receita.porcoes }} porção.</p>
+        </div>
     </div>
     <div class="col-lg-12">
         <hr>
         <h3>Comentários</h3>
+
+          <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+            <meta itemprop="interactionType" content="http://schema.org/CommentAction" />
+            <meta itemprop="userInteractionCount" content="140" />
+          </div>
         <p>Nenhum comentário ainda.</p>
     </div>
     <div class="col-lg-12">

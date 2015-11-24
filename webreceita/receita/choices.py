@@ -2,12 +2,14 @@
 Arquivo para definir as escolhas possiveis para um Model da receita
 """
 
-COZIMENTO_ESCOLHAS = (
+PREPARO_ESCOLHAS = (
     (1, "Frito"),
     (2, "Cozido"),
     (3, "Assado"),
     (4, "Refogado"),
     (5, "Grelhar"),
+    (6, "Mexido"),
+    (7, "Batido")
 )
 
 STATE_CHOICES = (

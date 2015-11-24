@@ -2,8 +2,8 @@ function busca_suggest(data){
     return '<div><a href="/detalhe_receita/' + data.id + '"/>' + data.value + '</a></div>';
 }
 
-function busca_result(data, status, xhr){
-    'use strict'
+function busca_result(data){
+    'use strict';
     window.console.log(data);
     $('#busca_receita').typeahead({
         hint: true,
@@ -35,7 +35,7 @@ function busca_result(data, status, xhr){
 
 function busca_source(data){
     return function busca_match(q, cb){
-
+        'use strict';
         var matches, subregx;
         matches = [];
 
@@ -52,44 +52,11 @@ function busca_source(data){
 }
 
 $(function(){
-    var rating = $('.votacao').data('rate');
-    console.log(rating);
     $.ajax({
         method: 'GET',
         url: "/busca/",
         dataType: "json",
         cache: true,
-        success: busca_result,
+        success: busca_result
     });
-
-    $('.votacao span').each(function(i){
-        if(i < rating) {
-            $(this).removeClass('glyphicon-star-empty');
-            $(this).addClass('glyphicon-star');
-        }
-    }).hover(
-        function(){
-            var index = $(this).data('value');
-            $('.votacao span').each(function(i){
-                if(i < index){
-                    $(this).removeClass('glyphicon-star-empty');
-                    $(this).addClass('glyphicon-star');
-                }else{
-                    $(this).removeClass('glyphicon-star');
-                    $(this).addClass('glyphicon-star-empty');
-                }
-            });
-        },
-        function(){
-            $('.votacao span').each(function(i){
-                if(i >= rating) {
-                    $(this).removeClass('glyphicon-star');
-                    $(this).addClass('glyphicon-star-empty');
-                }else{
-                    $(this).removeClass('glyphicon-star-empty');
-                    $(this).addClass('glyphicon-star');
-                }
-            });
-        }
-    );
 });

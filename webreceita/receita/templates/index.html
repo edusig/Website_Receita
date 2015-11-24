@@ -5,6 +5,14 @@
 {% block scripts %}{% endblock %}
 
 {% block conteudo %}
+    {% if notificacao %}
+        <div class="alert alert-{{ notificacao.type }} alert-dismissable" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ notificacao.msg }}
+        </div>
+    {% endif %}
     {% for i in receitas %}
         {% if i.categoria %}
             <h2 class="categorias">

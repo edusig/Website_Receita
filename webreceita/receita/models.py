@@ -1,15 +1,15 @@
 from django.db import models
-from choices import COZIMENTO_ESCOLHAS, STATE_CHOICES
+from django.contrib.auth.models import User
+from choices import PREPARO_ESCOLHAS, STATE_CHOICES
 
 
-class Autor(models.Model):
+class PerfilUsuario(models.Model):
     nome_completo = models.CharField(max_length=200)
-    nascimento = models.DateTimeField()
+    nascimento = models.DateField()
     cidade = models.CharField(max_length=200)
     estado = models.CharField(max_length=2, choices=STATE_CHOICES)
     telefone = models.CharField(max_length=15)
-    login = models.EmailField(max_length=200)
-    senha = models.CharField(max_length=30)
+    usuario = models.ForeignKey(User, unique=True)
     
     def __unicode__(self):
         return self.nome_completo
@@ -25,14 +25,13 @@ class Categoria(models.Model):
 class Receita(models.Model):
     nome = models.CharField(max_length=50)
     descricao = models.TextField(max_length=300)
-    autor = models.ForeignKey(Autor)
+    autor = models.ForeignKey(PerfilUsuario)
     categoria = models.ForeignKey(Categoria)
     instrucao = models.TextField(max_length=800)
     porcoes = models.IntegerField()
     valor_nutricional = models.IntegerField()
-    metodo_cozimento = models.IntegerField(choices=COZIMENTO_ESCOLHAS, default=1)
+    metodo_preparo = models.IntegerField(choices=PREPARO_ESCOLHAS, default=1)
     image = models.ImageField(upload_to="receita_imagens/")
-    avaliacao = models.IntegerField()
     
     def __unicode__(self):
         return self.nome
@@ -54,3 +53,21 @@ class Ingredientes(models.Model):
 
     def __unicode__(self):
         return self.nome
+
+
+class Comentario(models.Model):
+    comentario = models.TextField(max_length=1000)
+    usuario = models.ForeignKey(PerfilUsuario)
+    receita = models.ForeignKey(Receita)
+
+    def __unicode__(self):
+        return "{}: {}".format(self.usuario.nome_completo, self.comentario)
+
+
+class Voto(models.Model):
+    valor = models.IntegerField(default=1)
+    usuario = models.ForeignKey(PerfilUsuario)
+    receita = models.ForeignKey(Receita)
+
+    def __unicode__(self):
+        return self.valor
