@@ -1,37 +1,92 @@
 {% load static %}
+{% load compress %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Website Receitas{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href='{% static 'css/bootstrap.min.css' %}'/>
-    <link rel="stylesheet" type="text/css" href='{% static 'css/bootstrap-theme.min.css' %}'/>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/estilo.css' %}" />
+    <title>Receitas Gourmet{% block title %}{% endblock %}</title>
+
+    <meta name="description" content="O maior site de receitas gourmet do Brasil!">
+    <meta name="keywords" content="receitas, gourmet, receita gourmet, cozinhar, massas, doces, bolos, carnes, cozinha gourmet" />
+    <meta name="Robots" content="INDEX,FOLLOW" />
+    <meta name="googlebot" content="FOLLOW, INDEX" />
+    <meta name="copyright" content="Copyright Eduardo e Hiero - 2015" />
+    <meta name="author" content="Eduardo S. Ciciliato, Hiero Martinelli" />
+    <meta name="Language" content="PT" />
+    <meta name="Distribution" content="Global" />
+    <meta name="Rating" content="General" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon" />
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon" />
+
+    <meta property="og:locale" content="pt-br" />
+    <meta property="og:site_name" content="Receitas Gourmet" />
+    {% block facebook_share %}
+        <meta property="og:url" content="http://edusig.ddns.net:8000/" />
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="Receitas Gourmet"/>
+        <meta property="og:description" content="O maior site de receitas gourmet do brasil!" />
+        <meta property="og:image" content="{% static 'images/logo.png' %}" />
+        <meta property="og:image:width" content="1540"/>
+        <meta property="og:image:height" content="240"/>
+    {% endblock %}
+
     <script type="text/javascript" src='{% static 'js/jquery.min.js' %}'></script>
-    <script type="text/javascript" src='{% static 'js/bootstrap.min.js' %}'></script>
-    <script type="text/javascript" src="{% static 'js/typeahead.bundle.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+    <script async type="text/javascript" src='{% static 'js/bootstrap.min.js' %}'></script>
+    <script async type="text/javascript" src="{% static 'js/typeahead.bundle.min.js' %}"></script>
+    {% compress js %}
+    <script async type="text/javascript" src="{% static 'js/index.js' %}"></script>
+    {% endcompress %}
     {% block scripts %}{% endblock %}
 </head>
-<body>
+<body dir="ltr">
+    <a href="#main" class="skip-main" target="_self">Skip to main content</a>
     <header class="container-fluid">
         {% include 'header.html' %}
-        <nav class="col-lg-12">
+        <nav class="row">
             <hr>
             {% include 'menu.html' %}
         </nav>
     </header>
-    <main class="container-fluid">
-        <hr>
-        <section class="col-lg-8">
-            {% block conteudo %}{% endblock %}
-        </section>
-        <aside class="col-lg-4">
-            {% include 'sidebar.html' %}
-        </aside>
+    <main class="container-fluid" id="main">
+        <div class="row">
+            <hr>
+            <section class="col-lg-8">
+                {% block conteudo %}{% endblock %}
+            </section>
+            <aside class="col-lg-4">
+                {% include 'sidebar.html' %}
+            </aside>
+        </div>
     </main>
     <footer class="container-fluid">
         {% include 'footer.html' %}
     </footer>
+    <script>
+        var cb, raf, ld;
+        cb = function(u) {
+            var l, h;
+            l = document.createElement('link'); l.rel = 'stylesheet';
+            l.href = u;
+            h = document.getElementsByTagName('link')[0];
+            h.parentNode.insertBefore(l, h);
+        };
+        ld = function(){cb("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"); cb("{% static 'css/estilo.min.css' %}");};
+        raf = requestAnimationFrame || mozRequestAnimationFrame ||
+        webkitRequestAnimationFrame || msRequestAnimationFrame;
+        if (raf) raf(ld);
+        else window.addEventListener('load', ld);
+    </script>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 </body>
 </html>

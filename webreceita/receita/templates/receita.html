@@ -4,21 +4,37 @@
 
 {% block title %} - {{ receita.nome }}{% endblock %}
 {% block scripts %}
-    <script src="{% static 'js/receita.js' %}"></script>
+    <script async src="{% static 'js/receita.js' %}"></script>
+{% endblock %}
+
+{% block facebook_share %}
+    <meta property="og:url" content="http://edusig.ddns.net:8000/{% url detalhe_receita receita.pk %}" />
+    <meta property="og:type" content="article"/>
+    <meta property="og:title" content="{{ receita.nome }} - Receitas Gourmet"/>
+    <meta property="og:description" content="{{ receita.descricao }}" />
+    <meta property="og:image" content="http://edusig.ddns.net:8000/uploads/{{ receita.image }}" />
+    <meta property="og:image:width" content="{{ receita.image.width }}"/>
+    <meta property="og:image:height" content="{{ receita.image.height }}"/>
+    <meta property="article:author" content="{{ receita.autor }}"/>
 {% endblock %}
 
 {% block conteudo %}
-    <div class="col-lg-12" itemscope itemtype="http://schema.org/Recipe">
+    <div class="container-fluid" itemscope itemtype="http://schema.org/Recipe">
         <h2><span itemprop="name">{{ receita.nome }}</span> ({{ receita.categoria.nome }})</h2>
         <div class="col-lg-6">
             <div class="receita_imagem">
-                <img itemprop="image" src="/uploads/{{ receita.image }}" id="receita_imagem"
-                 class="img-responsive">
+
+                <img itemprop="image" src="/uploads/{{ receita.image }}" id="receita_imagem" height="
+                {{ receita.image.height }}" width="{{ receita.image.width }}"
+                     class="img-responsive" alt="Imagem da receita de {{ receita.nome }}">
             </div>
             <div class="receita_galeria">
-                <img src="/uploads/{{ receita.image }}" class="imagem_galeria_item">
+                <img src="/uploads/{{ receita.image }}" class="imagem_galeria_item"
+                     height="75" width="{% widthratio receita.image.height receita.image.width 75 %}" />
+                <img src="/uploads/{{ receita.image }}" class="imagem_galeria_item" />
                 {% for imagem in imagens %}
-                    <img src="/uploads/{{ imagem.image }}" class="imagem_galeria_item">
+                    <img src="/uploads/{{ imagem.image }}" class="imagem_galeria_item"
+                         height="75" width="{% widthratio imagem.height imagem.width 75 %}" />
                 {% endfor %}
             </div>
             <div class="votacao" data-rate="{{ nota }}" data-receita="{{ id }}">
@@ -44,8 +60,12 @@
                       aria-hidden="true"></span>
             </div>
             <div class="col-lg-12">
-                <a href="{% url exportar_receita id %}/">Exportar receita</a><br>
+                <a href="{% url exportar_receita id %}/" target="_self">Exportar receita</a><br>
                 Criado por: <span itemprop="author">{{ receita.autor }}</span>
+            </div>
+            <div class="col-lg-12">
+                <div class="fb-share-button" data-href="http://edusig.ddns.net:8000{% url detalhe_receita receita.pk %}" data-layout="button_count"></div>
+                <a href="https://twitter.com/share" class="twitter-share-button"{count} data-url="http://edusig.ddns.net:8000{% url detalhe_receita receita.pk %}" data-text="Receita de {{ receita.nome }}" data-lang="pt" data-size="large">Tweetar</a>
             </div>
         </div>
         <div class="col-lg-6">
@@ -76,7 +96,7 @@
             <p>Serve {{ receita.porcoes }} porção.</p>
         </div>
     </div>
-    <div class="col-lg-12">
+    <div class="container-fluid">
         <hr>
         <h3>Comentários</h3>
 
@@ -100,7 +120,7 @@
             <p>Nenhum comentário ainda. Seja o primeiro a comentar!</p>
         {% endif %}
     </div>
-    <div class="col-lg-12">
+    <div class="container-fluid">
         <hr>
         <h3>Comentar</h3>
         {% if user.is_authenticated %}

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static%}
+{% load staticfiles %}
 
 {% block title %}{% endblock %}
 {% block scripts %}{% endblock %}
@@ -16,17 +16,21 @@
     {% for i in receitas %}
         {% if i.categoria %}
             <h2 class="categorias">
-                <a href="{% url categoria i.Nome %}">{{ i.Nome }}</a>
+                <a href="{% url categoria i.Nome %}" target="_self" title="ver mais receitas da categoria {{ i.Nome }}">{{ i.Nome }}</a>
             </h2>
         {% else %}
             <article class="receita">
                 <div class="col-lg-5">
-                    <img src="/uploads/{{ i.receita.image }}" class="receita_imagem img-responsive img-thumbnail">
+                    <img src="/uploads/{{ i.receita.image }}" height="{{ i.receita.image.height }}" width="{{ i.receita.image.width }}" class="receita_imagem img-responsive img-thumbnail" alt="" />
                 </div>
                 <div class="col-lg-7">
-                    <a href="{% url detalhe_receita i.receita.pk %}"><h3>{{ i.receita.nome }}</h3></a>
+                    <a href="{% url detalhe_receita i.receita.pk %}" target="_self" title="ver detalhes da receita {{ i.receita.nome }}">
+                        <h3>{{ i.receita.nome }}</h3>
+                    </a>
                     <p>{{ i.receita.descricao }}</p>
                     <p>Criado por: {{ i.receita.autor }}</p>
+                    <div class="fb-share-button" data-href="http://edusig.ddns.net:8000{% url detalhe_receita i.receita.pk %}" data-layout="button_count"></div>
+                    <p><a href="https://twitter.com/share" class="twitter-share-button"{count} data-url="http://edusig.ddns.net:8000{% url detalhe_receita i.receita.pk %}" data-text="Receita de {{ i.receita.nome }}" data-lang="pt" data-size="large">Tweetar</a></p>
                 </div>
             </article>
         {% endif %}

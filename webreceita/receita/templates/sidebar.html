@@ -3,10 +3,9 @@
 {% for receita in receita_do_dia %}
     <article class="receita col-lg-12">
         <a href="{% url detalhe_receita receita.pk %}">
-            <img src="/uploads/{{ receita.image }}" class="receita_imagem img-responsive">
-            <p>
-                <h4>{{ receita.nome }}</h4>
-            </p>
+            <img src="/uploads/{{ receita.image }}" height="{{ receita.image.height }}" width="{{ receita.image.width }}"
+                 class="receita_imagem img-responsive" alt="">
+            <h4>{{ receita.nome }}</h4>
         </a>
     </article>
 {% endfor %}
@@ -14,10 +13,9 @@
 {% for receita in top_receitas %}
     <article class="receita col-lg-12">
         <a href="{% url detalhe_receita receita.pk %}">
-            <img src="/uploads/{{ receita.image }}" class="receita_imagem img-responsive">
-            <p>
-                <h4>{{ receita.nome }}</h4>
-            </p>
+            <img src="/uploads/{{ receita.image }}" height="{{ receita.image.height }}" width="{{ receita.image.width }}"
+                 class="receita_imagem img-responsive" alt="">
+            <h4>{{ receita.nome }}</h4>
         </a>
     </article>
 {% endfor %}

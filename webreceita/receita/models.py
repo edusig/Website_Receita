@@ -21,6 +21,10 @@ class Categoria(models.Model):
     def __unicode__(self):
         return self.nome
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('receita.views.categoria', [str(self.nome)])
+
 
 class Receita(models.Model):
     nome = models.CharField(max_length=50)
@@ -35,6 +39,10 @@ class Receita(models.Model):
     
     def __unicode__(self):
         return self.nome
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('receita.views.detalhe_receita', [str(self.pk)])
 
 
 class ReceitaImagem(models.Model):

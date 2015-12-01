@@ -239,3 +239,7 @@ def busca(req):
     rec_nomes = [[x.nome, x.id] for x in receitas]
     response = {'receitas': rec_nomes}
     return HttpResponse(json.dumps(response), content_type="application/json")
+
+
+def robots(req):
+    return HttpResponse(open('robots.txt').read(), mimetype="text/plain")

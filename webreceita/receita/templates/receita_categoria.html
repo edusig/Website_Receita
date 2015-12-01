@@ -9,7 +9,13 @@
     {% for receita in receitas %}
         <article class="receita col-lg-12">
             <div class="col-lg-5">
-                <a href="{% url detalhe_receita receita.pk %}"><img src="/uploads/{{ receita.image }}" class="receita_imagem img-thumbnail img-responsive"></a>
+                <a href="{% url detalhe_receita receita.pk %}">
+                    <img src="/uploads/{{ receita.image }}" height="
+                    {{ receita.image.height }}" width="{{ receita.image.width }}"
+                         class="receita_imagem
+                    img-responsive img-thumbnail" alt="Imagem da receita de
+                    {{ receita.nome }}">
+                </a>
             </div>
             <div class="col-lg-7">
                 <a href="{% url detalhe_receita receita.pk %}"><h3>{{ receita.nome }}</h3></a>

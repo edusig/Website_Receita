@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
 {% load static%}
 {% load crispy_forms_tags %}
+{% load compress %}
 
 {% block title %} - Cadastro de Usuário{% endblock %}
 {% block scripts %}
     <link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.min.css' %}"/>
-    <script src="{% static 'js/moment-with-locales.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
-    <script src="{% static 'js/cadastro.js' %}"></script>
+    <script async src="{% static 'js/moment-with-locales.min.js' %}"></script>
+    <script async src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+    {% compress js %}
+        <script async src="{% static 'js/cadastro.js' %}"></script>
+    {% endcompress %}
 {% endblock %}
 
 {% block conteudo %}
